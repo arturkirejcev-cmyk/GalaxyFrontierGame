@@ -24,7 +24,7 @@ main{max-width:760px;margin:0 auto;padding:4px 14px 20px}.hero{position:relative
 <div id="toast" class="toast"></div>
 <script>
 const tg=window.Telegram?.WebApp;tg?.ready();tg?.expand();tg?.setHeaderColor?.('#080d1e');tg?.setBackgroundColor?.('#070b18');
-const API='https://YOUR_API_DOMAIN';let initData='',state=null,page='home',busy=false;
+const API='https://galaxy.91-208-184-101.sslip.io';let initData='',state=null,page='home',busy=false;
 const headers=(post=false)=>{const h={'Content-Type':'application/json','Authorization':'tma '+initData};if(post)h['Idempotency-Key']=crypto.randomUUID();return h};
 async function api(path,method='GET',body){const post=method!=='GET';const r=await fetch(API+path,{method,headers:headers(post),body:body===undefined?undefined:JSON.stringify(body)});let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(d.detail||'Помилка сервера');return d}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
