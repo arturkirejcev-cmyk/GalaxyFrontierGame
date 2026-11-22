@@ -25,8 +25,8 @@ main{max-width:760px;margin:0 auto;padding:4px 14px 20px}.hero{position:relative
 <script>
 const tg=window.Telegram?.WebApp;tg?.ready();tg?.expand();tg?.setHeaderColor?.('#080d1e');tg?.setBackgroundColor?.('#070b18');
 const API='https://galaxy.91-208-184-101.sslip.io';let initData='',state=null,page='home',busy=false;
-const headers=(post=false)=>{const h={'Content-Type':'application/json','Authorization':'tma '+initData};if(post)h['Idempotency-Key']=crypto.randomUUID();return h};
-async function api(path,method='GET',body){const post=method!=='GET';const r=await fetch(API+path,{method,headers:headers(post),body:body===undefined?undefined:JSON.stringify(body)});let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(d.detail||'Помилка сервера');return d}
+const headers=(post=false)=>{initData=tg?.initData||initData;const h={'Content-Type':'application/json','Authorization':'tma '+initData};if(post)h['Idempotency-Key']=crypto.randomUUID();return h};
+async function api(path,method='GET',body){const post=method!=='GET';let r;try{r=await fetch(API+path,{method,headers:headers(post),body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'})}catch(e){throw Error('Не вдалося з’єднатися з API. Перевір адресу API, HTTPS та Caddy.')}let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(d.detail||('Помилка API: '+r.status));return d}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2800)}
 function money(n){return Number(n||0).toLocaleString('uk-UA')}
